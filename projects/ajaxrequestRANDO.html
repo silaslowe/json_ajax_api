@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="form">
+      <input type="submit" value="Rando" />
+    </form>
+    <div id="output"></div>
+    <script>
+      const output = document.getElementById("output");
+      const form = document.getElementById("form");
+
+      var ajax = new XMLHttpRequest();
+      ajax.onreadystatechange = function () {
+        // console.log("state changed", ajax.readyState, ajax.status);
+        if (ajax.readyState == 4 && ajax.status == 200) {
+          let jsonData = JSON.parse(ajax.responseText);
+          console.log(jsonData.results[0].id);
+          let fName = jsonData.results[0].name.first;
+          let lName = jsonData.results[0].name.last;
+          output.innerHTML = `${fName} ${lName}`;
+        }
+      };
+      ajax.open("GET", "https://randomuser.me/api/", true);
+      ajax.send();
+    </script>
+  </body>
+</html>

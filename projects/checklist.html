@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>LEARN JSON</h1>
+    <div id="output">
+      <ul id="taskList"></ul>
+    </div>
+    <form id="myForm">
+      Task:
+      <input type="text" name="task" placeholder="add task" />
+      <input type="submit" value="Add New Task" />
+    </form>
+    <script type="text/javascript">
+      var dataJSON = "";
+      var output = document.getElementById("output");
+      var taskList = document.getElementById("taskList");
+
+      document.getElementById("myForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var tempValue = document.querySelector('input[name="task"]').value;
+        addNewItem({
+          "info": tempValue,
+          "status": false,
+        });
+      });
+
+      window.onload = function () {
+        if (sessionStorage["tasklist"] != null) {
+          dataJSON = JSON.parse(sessionStorage["tasklist"]);
+          buildCheckBoxes(dataJSON);
+        } else {
+          // var data =
+          //   '[{"info":"Cut the Grass","status":true},{"info":"Clean Room","status":false},{"info":"Go to Gym","status":false},{"info":"Make Dinner","status":false}]';
+
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              var data = xhr.responseText;
+              dataJSON = JSON.parse(data);
+              buildCheckBoxes(dataJSON);
+            }
+          };
+          xhr.open("GET", "http://discoveryvip.com/shared/json.php?f=list", true);
+          xhr.send();
+        }
+      };
+
+      function addNewItem(data) {
+        addCheckBox(data, dataJSON.length);
+        dataJSON.push(data);
+        sessionStorage["tasklist"] = JSON.stringify(dataJSON);
+      }
+
+      function addCheckBox(data, key) {
+        let li = document.createElement("li");
+        let checkbox = document.createElement("input");
+        let textInside = document.createTextNode(data.info);
+        let span = document.createElement("span");
+        span.innerHTML = "x";
+        span.onclick = remove;
+        checkbox.type = "checkbox";
+        checkbox.value = key;
+        checkbox.checked = data.status;
+        checkbox.setAttribute("onchange", "updateJSON()");
+        li.appendChild(textInside);
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        document.querySelector("#taskList").appendChild(li);
+      }
+
+      function remove(event) {
+        var index = this.previousElementSibling.value;
+        taskList.innerHTML = "";
+        dataJSON.splice(index, 1);
+        buildCheckboxes(dataJSON);
+      }
+
+      function buildCheckBoxes(data) {
+        for (var key in data) {
+          addCheckBox(data[key], key);
+        }
+      }
+
+      function updateJSON() {
+        let key = event.target.value;
+        dataJSON[key].status = event.target.checked;
+        sessionStorage["tasklist"] = JSON.stringify(dataJSON);
+      }
+    </script>
+  </body>
+</html>

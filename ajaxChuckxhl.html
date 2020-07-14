@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="trigger">Get A Joke</button>
+    <div id="output"></div>
+    <script type="text/javascript">
+      const joker = document.getElementById("trigger");
+      const output = document.getElementById("output");
+      joker.addEventListener("click", loadJoke);
+
+      function loadJoke() {
+        let ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            let json = JSON.parse(this.responseText);
+            let image = json.icon_url;
+            let joke = json.value;
+            output.innerHTML = `<img src="${image}"><br>${joke} `;
+          }
+        };
+        ajax.open("GET", "https://api.chucknorris.io/jokes/random", true);
+        ajax.send();
+      }
+    </script>
+  </body>
+</html>

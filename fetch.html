@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="trigger">Get A Joke</button>
+    <div id="output"></div>
+    <script type="text/javascript">
+      const joker = document.getElementById("trigger");
+      const output = document.getElementById("output");
+      joker.addEventListener("click", loadJoke);
+
+      function loadJoke() {
+        const url = "https://api.chucknorris.io/jokes/random";
+
+        // Refactored
+        fetch(url)
+          .then(resJSON)
+          .then((json) => (output.innerHTML = `${json.value} <br>${json.created_at}`))
+          .catch((error) => console.log(error));
+
+        function resJSON(response) {
+          return response.json();
+        }
+
+        // fetch(url)
+        //   .then((response) => response.json())
+        //   .then((json) => (output.innerHTML = `${json.value} <br>${json.created_at}`))
+        //   .catch((error) => console.log(error));
+
+        // function resJSON() {
+        //   return response.json();
+        // }
+
+        //   fetch(url)
+        //   .then(function (response) {
+        //     return response.json();
+        //   })
+        //   .then(function (json) {
+        //     output.innerHTML = `${json.value} <br>${json.created_at}`;
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
+
+        // fetch("simple.txt").then(function (response) {
+        //   response.text().then(function (text) {
+        //     console.log(text);
+        //   });
+        // });
+      }
+
+      //       .then(function (response) {
+      //         return response.text();
+      //       })
+      //       .then(function (text) {
+      //         let json = JSON.parse(text);
+      //         let joke = json.value;
+      //         output.innerHTML = `${joke}`;
+      //       });
+      //   }
+    </script>
+  </body>
+</html>

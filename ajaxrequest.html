@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="loadNew">Load</button>
+    <div id="output"></div>
+
+    <script>
+      const output = document.getElementById("output");
+      const buttonClick = document.getElementById("loadNew");
+      buttonClick.addEventListener("click", function () {
+        loadAjax();
+      });
+      function loadAjax() {
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function () {
+          // console.log("state changed", ajax.readyState, ajax.status);
+          if (ajax.readyState == 4 && ajax.status == 200) {
+            let jsonData = JSON.parse(ajax.responseText);
+            // data shortens the remianing variables for readability.
+            let data = jsonData.results[0];
+            console.log(data);
+            let fName = data.name.first;
+            let lName = data.name.last;
+            let image = data.picture.large;
+            output.innerHTML += `<br><img src="${image}"> ${fName} ${lName}`;
+          }
+        };
+        ajax.open("GET", "https://randomuser.me/api/", true);
+        ajax.send();
+      }
+    </script>
+  </body>
+</html>

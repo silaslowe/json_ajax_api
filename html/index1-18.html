@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Learn JSON</h1>
+    <div id="output"></div>
+    <script>
+      const myObj = {
+        "friends": [
+          {
+            "fName": "Mike",
+            "lName": "Jones",
+          },
+          {
+            "fName": "John",
+            "lName": "Smithe",
+          },
+          {
+            "fName": "Laurence",
+            "lName": "Svekis",
+          },
+        ],
+      };
+      const users = myObj.friends;
+      let output = document.getElementById("output");
+      let x = 0;
+      users.forEach((user) => {
+        x += 1;
+        output.innerHTML += `<br>${x}: ${user.fName} ${user.lName}`;
+      });
+    </script>
+  </body>
+</html>

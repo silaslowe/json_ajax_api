@@ -1,0 +1,14 @@
+*****This is a simpe AJAX GET****
+
+var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              var data = xhr.responseText;
+              dataJSON = JSON.parse(data);
+              buildCheckBoxes(dataJSON);
+            }
+          };
+          xhr.open("GET", "http://discoveryvip.com/shared/json.php?f=list", true);
+          xhr.send();
+        }
+      };

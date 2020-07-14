@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="myForm">
+      <input type="text" name="first" value="Laurence" /><br />
+      <input type="text" name="last" value="Svekis" />
+      <input type="text" name="company" value="Discoveryvip" />
+      <input type="submit" value="Send My Data" />
+    </form>
+    <div id="output"></div>
+    <script type="text/javascript">
+      const myForm = document.getElementById("myForm");
+      const output = document.getElementById("output");
+
+      myForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        // let data = JSON.stringify(formData(myForm));
+        loadJSON(formData(myForm));
+      });
+
+      function formData(form) {
+        let el = form.querySelectorAll('input[type="text"]');
+        let myData = "";
+        for (let x = 0; x < el.length; x++) {
+          let name = el[x].name;
+          let value = el[x].value;
+          //   myData[name] = value;
+          myData += name + "=" + value + "&";
+        }
+        return myData.slice(0, -1);
+      }
+
+      function loadJSON(data) {
+        const url = "http://s179017901.onlinehome.us/discoveryvip/";
+        console.log(data);
+        const myData = data;
+        fetch(url, {
+          method: "post",
+          headers: { "Content-type": "application/x-www-form-urlencoded; charset=UTFp-8" },
+          body: myData,
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            console.log(data);
+          })
+          .then()
+          .catch((error) => console.log(error));
+      }
+      function resJSON(response) {
+        return response.json();
+      }
+    </script>
+  </body>
+</html>
